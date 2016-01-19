@@ -14,7 +14,6 @@ var ee = require('subscribe-ui-event/dist/globalVars').EE;
 var expect = require('expect.js');
 var inner;
 var outer;
-var ReactDOM = require('react-dom');
 var Sticky = require('../../../dist/Sticky');
 var sticky;
 
@@ -22,6 +21,7 @@ var STICKY_WIDTH = 100;
 var STICKY_HEIGHT = 300;
 var STICKY_TOP = 0;
 var SCROLL_POS = 0;
+var React = require('react');
 
 ae = {
     scroll: {
@@ -105,6 +105,7 @@ function shouldBeReset (t) {
 }
 
 function checkTransform3d (inner) {
+    console.log(inner);
     var style = inner._reactInternalComponent._currentElement.props.style;
     expect(style.transform).to.contain('translate3d');
 }
@@ -125,7 +126,7 @@ describe('Sticky', function () {
 
     it('should work as expected (short Sticky)', function () {
         sticky = jsx.renderComponent(Sticky);
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case
@@ -146,7 +147,7 @@ describe('Sticky', function () {
     it('should work as expected (long Sticky)', function () {
         STICKY_HEIGHT = 1200;
         sticky = jsx.renderComponent(Sticky);
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case
@@ -183,7 +184,7 @@ describe('Sticky', function () {
     it('should work as expected with original postion 20px from top (short Sticky)', function () {
         STICKY_TOP = 20;
         sticky = jsx.renderComponent(Sticky);
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case
@@ -206,7 +207,7 @@ describe('Sticky', function () {
         sticky = jsx.renderComponent(Sticky, {
             bottomBoundary: 400
         });
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case
@@ -232,7 +233,7 @@ describe('Sticky', function () {
         sticky = jsx.renderComponent(Sticky, {
             bottomBoundary: 200
         });
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case
@@ -256,7 +257,7 @@ describe('Sticky', function () {
             top: '#test',
             bottomBoundary: '#test'
         });
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case
@@ -281,7 +282,7 @@ describe('Sticky', function () {
     it('should stick to the top when window resizes larger then Sticky (long Sticky)', function () {
         STICKY_HEIGHT = 800;
         sticky = jsx.renderComponent(Sticky);
-        outer = ReactDOM.findDOMNode(sticky);
+        outer = React.findDOMNode(sticky);
         inner = outer.firstChild;
 
         // regular case

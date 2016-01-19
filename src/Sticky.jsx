@@ -10,7 +10,6 @@ var React = require('react');
 
 var classNames = require('classnames');
 var propTypes = React.PropTypes;
-var shallowCompare = require('react-addons-shallow-compare');
 var subscribe = require('subscribe-ui-event').subscribe;
 
 // constants
@@ -146,8 +145,8 @@ class Sticky extends React.Component {
         var self = this;
 
         self.timer = +new Date;
-        var outer = self.refs.outer;
-        var inner = self.refs.inner;
+        var outer = self.refs.outer.getDOMNode();
+        var inner = self.refs.inner.getDOMNode();
         var outerRect = outer.getBoundingClientRect();
 
         var width = outerRect.width;
@@ -292,7 +291,9 @@ class Sticky extends React.Component {
     }
 
     shouldComponentUpdate (nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
+        //TODO: implement an alternative
+        //return shallowCompare(this, nextProps, nextState);
+        return true;
     }
 
     render () {
