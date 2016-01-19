@@ -109,7 +109,7 @@
     }
   },
   "peerDependencies": {
-    "react": "^0.13",
+    "react": "^0.13"
   },
   "precommit": [
     "lint",
