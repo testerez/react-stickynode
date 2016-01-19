@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "classnames": "^2.0.0",
-    "react-addons-shallow-compare": "^0.14.2",
+    "react-addons-shallow-compare": "^0.13",
     "subscribe-ui-event": "^1.0.0"
   },
   "devDependencies": {
@@ -59,8 +59,7 @@
     "mocha": "^2.0",
     "mockery": "^1.4.0",
     "pre-commit": "^1.0.0",
-    "react-dom": "^0.14.2",
-    "react": "^0.14.2",
+    "react": "^0.13",
     "xunit-file": "~0.0.9"
   },
   "eslintConfig": {
@@ -110,8 +109,7 @@
     }
   },
   "peerDependencies": {
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2"
+    "react": "^0.13",
   },
   "precommit": [
     "lint",
