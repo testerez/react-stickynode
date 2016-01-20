@@ -49,6 +49,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     if (M) {
         enableTransforms = M.csstransforms3d;
         TRANSFORM_PROP = M.prefixed('transform');
+    } else {
+        enableTransforms = !/msie [789]/.test(navigator.userAgent.toLowerCase());
     }
 }
 

@@ -41,6 +41,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     if (M) {
         enableTransforms = M.csstransforms3d;
         TRANSFORM_PROP = M.prefixed('transform');
+    }else{
+        enableTransforms = !/msie [789]/.test(navigator.userAgent.toLowerCase());
     }
 }
 
@@ -69,7 +71,7 @@ class Sticky extends React.Component {
             bottomBoundary: Infinity, // The bottom boundary on document
             status: STATUS_ORIGINAL, // The Sticky status
             pos: 0, // Real y-axis offset for rendering position-fixed and position-relative
-            activated: false // once browser info is available after mounted, it becomes true to avoid checksum error 
+            activated: false // once browser info is available after mounted, it becomes true to avoid checksum error
         };
     }
 
