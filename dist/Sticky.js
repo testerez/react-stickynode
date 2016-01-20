@@ -171,7 +171,7 @@ var Sticky = (function (_React$Component) {
             var inner = self.refs.inner.getDOMNode();
             var outerRect = outer.getBoundingClientRect();
 
-            var width = outer.offsetWidth;
+            var width = outerRect.width;
             var height = inner.offsetHeight;
             var outerY = outerRect.top + scrollTop;
 
