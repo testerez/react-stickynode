@@ -30,7 +30,6 @@
   ],
   "dependencies": {
     "classnames": "^2.0.0",
-    "jsx-test": "^0.7.6",
     "subscribe-ui-event": "^1.0.0"
   },
   "devDependencies": {
