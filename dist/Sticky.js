@@ -335,7 +335,6 @@ var Sticky = (function (_React$Component) {
             var self = this;
             // TODO, "overflow: auto" prevents collapse, need a good way to get children height
             var style = {
-                overflow: 'hidden',
                 position: self.state.status === STATUS_FIXED ? 'fixed' : 'relative',
                 top: self.state.status === STATUS_FIXED ? '0' : ''
             };
