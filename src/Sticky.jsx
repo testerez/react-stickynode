@@ -9,7 +9,7 @@
 var React = require('react');
 
 var classNames = require('classnames');
-var propTypes = React.PropTypes;
+var PropTypes = React.PropTypes;
 var subscribe = require('subscribe-ui-event').subscribe;
 
 // constants
@@ -22,7 +22,7 @@ var TRANSFORM_PROP = 'transform';
 var doc;
 var docBody;
 var docEl;
-var enableTransforms = true; // Use transform by default, so no Sticky on lower-end browser when no Modernizr
+var canEnableTransforms = true; // Use transform by default, so no Sticky on lower-end browser when no Modernizr
 var M;
 var scrollDelta = 0;
 var scrollTop = -1;
@@ -39,10 +39,10 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     M = window.Modernizr;
     // No Sticky on lower-end browser when no Modernizr
     if (M) {
-        enableTransforms = M.csstransforms3d;
+        canEnableTransforms = M.csstransforms3d;
         TRANSFORM_PROP = M.prefixed('transform');
     }else{
-        enableTransforms = !/msie [789]/.test(navigator.userAgent.toLowerCase());
+        canEnableTransforms = !/msie [789]/.test(navigator.userAgent.toLowerCase());
     }
 }
 
@@ -146,13 +146,13 @@ class Sticky extends React.Component {
     updateInitialDimension () {
         var self = this;
 
-        self.timer = +new Date;
         var outer = self.refs.outer.getDOMNode();
         var inner = self.refs.inner.getDOMNode();
         var outerRect = outer.getBoundingClientRect();
+        var innerRect = inner.getBoundingClientRect();
 
-        var width = outerRect.width;
-        var height = inner.offsetHeight;
+        var width = outerRect.width || outerRect.right - outerRect.left;
+        var height = innerRect.height || innerRect.bottom - innerRect.top;;
         var outerY = outerRect.top + scrollTop;
 
         self.setState({
@@ -221,8 +221,8 @@ class Sticky extends React.Component {
             self.stickyTop = self.stickyBottom - self.state.height;
             self.release(self.stickyTop);
         } else {
-            if (self.state.height > winHeight) {
-                // In this case, Sticky is larger then screen
+            if (self.state.height > winHeight - self.state.top) {
+                // In this case, Sticky is larger then screen minus sticky top
                 switch (self.state.status) {
                     case STATUS_ORIGINAL:
                         self.release(self.state.y);
@@ -285,6 +285,7 @@ class Sticky extends React.Component {
     }
 
     translate (style, pos) {
+        var enableTransforms = canEnableTransforms && this.props.enableTransforms
         if (enableTransforms && this.state.activated) {
             style[TRANSFORM_PROP] = 'translate3d(0,' + pos + 'px,0)';
         } else {
@@ -301,20 +302,22 @@ class Sticky extends React.Component {
     render () {
         var self = this;
         // TODO, "overflow: auto" prevents collapse, need a good way to get children height
-        var style = {
+        var innerStyle = {
             position: self.state.status === STATUS_FIXED ? 'fixed' : 'relative',
             top: self.state.status === STATUS_FIXED ? '0' : ''
         };
+        var outerStyle = {};
 
         // always use translate3d to enhance the performance
-        self.translate(style, self.state.pos);
+        self.translate(innerStyle, self.state.pos);
         if (self.state.status !== STATUS_ORIGINAL) {
-            style.width = self.state.width;
+            innerStyle.width = self.state.width;
+            outerStyle.height = self.state.height;
         }
 
         return (
-            <div ref='outer' className={classNames('sticky-outer-wrapper', self.props.className)}>
-                <div ref='inner' className='sticky-inner-wrapper' style={style}>
+            <div ref='outer' className={classNames('sticky-outer-wrapper', self.props.className)} style={outerStyle}>
+                <div ref='inner' className='sticky-inner-wrapper' style={innerStyle}>
                     {self.props.children}
                 </div>
             </div>
@@ -325,7 +328,8 @@ class Sticky extends React.Component {
 Sticky.defaultProps = {
     enabled: true,
     top: 0,
-    bottomBoundary: 0
+    bottomBoundary: 0,
+    enableTransforms: true
 };
 
 /**
@@ -336,16 +340,17 @@ Sticky.defaultProps = {
  *        Could be a selector representing a node whose bottom should serve as the bottom boudary.
  */
 Sticky.propTypes = {
-    enabled: propTypes.bool,
-    top: propTypes.oneOfType([
-        propTypes.string,
-        propTypes.number
+    enabled: PropTypes.bool,
+    top: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
     ]),
-    bottomBoundary: propTypes.oneOfType([
-        propTypes.object,  // TODO, may remove
-        propTypes.string,
-        propTypes.number
-    ])
+    bottomBoundary: PropTypes.oneOfType([
+        PropTypes.object,  // TODO, may remove
+        PropTypes.string,
+        PropTypes.number
+    ]),
+    enableTransforms: PropTypes.bool
 };
 
 module.exports = Sticky;
